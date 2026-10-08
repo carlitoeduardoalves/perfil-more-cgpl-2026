@@ -1,0 +1,562 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Descubra seu perfil M.O.R.E. — Hub do Conhecimento, PMI Pernambuco, XVI CGPL 2026">
+<meta name="theme-color" content="#5b2c9f">
+<style>html,body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Perfil M.O.R.E.</title>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Source+Sans+3:wght@400;600&display=swap">
+</head>
+<body>
+<style>
+/* Layout: single centered column (max 640px), one screen per step; kiosk-friendly big touch targets */
+:root{
+  --bg:#f6f4fa; --card:#ffffff; --fg:#1f1a2e; --muted:#6b647c; --line:#e3deee;
+  --roxo:#5b2c9f; --ciano:#0097b8; --laranja:#f26122; --tan:#b58a63;
+  --accent:var(--roxo); --accent-fg:#ffffff; --soft:#efe9f8; --pill-fg:#ffffff;
+  --ok:#1f8f5f; --ok-bg:#e3f5ec; --bad:#b4322d; --bad-bg:#fbe7e5;
+  --display:"Sora",system-ui,sans-serif; --body:"Source Sans 3",system-ui,sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#17132a; --card:#221c38; --fg:#f1edf9; --muted:#a79fbd; --line:#352c52;
+  --roxo:#9d7bdc; --ciano:#3cc3e2; --laranja:#ff8a52; --tan:#d2a97f; --soft:#2d2546; --accent-fg:#17132a; --pill-fg:#17132a;
+  --ok:#5fd39a; --ok-bg:#1d3a2c; --bad:#ff8a84; --bad-bg:#44232a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#17132a; --card:#221c38; --fg:#f1edf9; --muted:#a79fbd; --line:#352c52;
+  --roxo:#9d7bdc; --ciano:#3cc3e2; --laranja:#ff8a52; --tan:#d2a97f; --soft:#2d2546; --accent-fg:#17132a; --pill-fg:#17132a;
+  --ok:#5fd39a; --ok-bg:#1d3a2c; --bad:#ff8a84; --bad-bg:#44232a; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.45;margin:0;padding-block:20px 40px;padding-inline:16px}
+.wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
+header.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.brand b{color:var(--roxo)}
+.pill{font-size:13px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:4px 10px;white-space:nowrap}
+h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(30px,7vw,42px);font-weight:700}
+h2{font-size:clamp(22px,5vw,28px);font-weight:700}
+.cM{color:var(--roxo)} .cO{color:var(--ciano)} .cR{color:var(--laranja)} .cE{color:var(--tan)}
+.lead{color:var(--muted);font-size:18px;margin:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px}
+.btn{font-family:var(--display);font-weight:600;font-size:17px;border:0;border-radius:12px;padding:14px 20px;cursor:pointer;background:var(--accent);color:var(--accent-fg);min-height:52px}
+.btn:focus-visible,.opt:focus-visible,input:focus-visible,.chip:focus-visible{outline:3px solid var(--ciano);outline-offset:2px}
+.btn.ghost{background:transparent;color:var(--fg);border:1px solid var(--line)}
+.btn.sm{min-height:40px;padding:8px 14px;font-size:14px}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+label{font-size:14px;color:var(--muted);display:block;margin-bottom:6px}
+input[type=text],input[type=email]{width:100%;font:inherit;font-size:18px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+.field{margin-top:14px}
+.hint{font-size:13px;color:var(--muted);margin-top:4px}
+.pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.pillars div{border-radius:10px;padding:10px 8px;text-align:center;font-family:var(--display);font-weight:600;font-size:13px;color:var(--pill-fg);line-height:1.2}
+.pillars small{display:block;font-family:var(--body);font-weight:400;font-size:12px;opacity:.95;margin-top:2px}
+.pM{background:var(--roxo)} .pO{background:var(--ciano)} .pR{background:var(--laranja)} .pE{background:var(--tan)}
+.def{display:flex;flex-direction:column;gap:12px;margin-top:16px}
+.def .item{display:grid;grid-template-columns:44px 1fr;gap:12px;align-items:start}
+.def .letter{font-family:var(--display);font-weight:700;font-size:28px;line-height:1;padding-top:2px}
+.def .name{font-family:var(--display);font-weight:600;font-size:15px}
+.def .desc{color:var(--muted);font-size:15px}
+.eyebrow{font-family:var(--display);font-weight:600;font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.progress{display:flex;gap:6px}
+.progress span{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.progress span.done{background:var(--roxo)}
+.q-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;font-family:var(--display);font-weight:600}
+.q-head .tag{color:var(--fg);padding:3px 9px;border-radius:999px;background:var(--soft)}
+.question{font-size:21px;font-weight:600;line-height:1.3;margin:12px 0 18px}
+.opts{display:flex;flex-direction:column;gap:10px}
+.opt{text-align:left;font:inherit;font-size:17px;line-height:1.35;padding:14px 16px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer;transition:border-color .15s}
+.opt:hover{border-color:var(--roxo)}
+.opt.sel{border-color:var(--roxo);background:var(--soft)}
+.opt.best{border-color:var(--ok);background:var(--ok-bg)}
+.opt.sel.wrong{border-color:var(--bad);background:var(--bad-bg)}
+.opt[disabled]{cursor:default}
+.feedback{margin-top:16px;padding:14px 16px;border-radius:12px;border-left:4px solid var(--ciano);background:var(--soft);font-size:16px}
+.feedback b{font-family:var(--display);font-size:13px;letter-spacing:.06em;text-transform:uppercase;display:block;margin-bottom:4px;color:var(--ciano)}
+.feedback .src{display:block;margin-top:6px;font-size:13px;color:var(--muted)}
+/* matching puzzle */
+.match{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.m-left{padding:14px 16px;border-radius:12px;background:var(--soft);font-weight:600;border-left:5px solid var(--roxo)}
+.m-left .eyebrow{display:block;margin-bottom:2px}
+.chips{display:flex;flex-direction:column;gap:8px}
+.chip{text-align:left;font:inherit;font-size:16px;line-height:1.35;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--bg);color:var(--fg);cursor:pointer}
+.chip:hover{border-color:var(--roxo)}
+.chip.ok{border-color:var(--ok);background:var(--ok-bg)}
+.chip.no{border-color:var(--bad);background:var(--bad-bg)}
+.chip[disabled]{cursor:default;opacity:.85}
+.chip.used{opacity:.45}
+.m-status{font-size:14px;color:var(--muted)}
+.result-title{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-family:var(--display);font-weight:600}
+.profile{font-size:clamp(26px,6vw,36px);margin:4px 0 6px}
+.bars{display:flex;flex-direction:column;gap:12px;margin-top:18px}
+.bar{display:grid;grid-template-columns:34px 1fr 44px;gap:10px;align-items:center;font-variant-numeric:tabular-nums}
+.bar .k{font-family:var(--display);font-weight:700;font-size:18px}
+.bar .t{height:14px;border-radius:7px;background:var(--line);overflow:hidden}
+.bar .t i{display:block;height:100%;border-radius:7px;width:0;transition:width .6s ease}
+.bar .v{text-align:right;color:var(--muted);font-size:14px}
+.bar .lbl{grid-column:2/4;font-size:13px;color:var(--muted);margin-top:-6px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.viz{display:flex;gap:18px;align-items:center;margin-top:18px;flex-wrap:wrap}
+.viz svg{flex:0 0 auto}
+.viz text{font-family:var(--display);font-weight:700;fill:var(--fg)}
+@media (max-width:480px){.two{grid-template-columns:1fr}}
+.mini{padding:14px 16px;border-radius:12px;background:var(--soft)}
+.insight{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+@media (max-width:520px){.insight{grid-template-columns:1fr}}
+.ins{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--card);display:flex;flex-direction:column;gap:8px;min-width:0}
+.ins .top{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.ins .top>div{min-width:0;flex:1 1 160px}
+.ins .badges{display:flex;gap:6px;flex:0 0 auto}
+.ins .badge{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:20px;color:#fff;flex:0 0 auto}
+.ins .ttl{font-family:var(--display);font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ins .big{font-family:var(--display);font-weight:600;font-size:17px;line-height:1.25;overflow-wrap:anywhere}
+.ins p{margin:0;font-size:15px;color:var(--muted)}
+.ins.dev{grid-column:1/-1;background:var(--soft);border-color:transparent}
+.steps{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
+.steps li{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;font-size:15px;line-height:1.4;color:var(--fg)}
+.steps li i{font-style:normal;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:13px;color:#fff;background:var(--acc,var(--roxo))}
+.steps li span{padding-top:3px}
+.self{font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;margin-top:2px}
+.admin{border:1px dashed var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.admin h3{font-size:16px}
+.mini b{display:block;font-family:var(--display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.tally{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.tally div{text-align:center;padding:10px 6px;border-radius:10px;border:1px solid var(--line)}
+.tally strong{display:block;font-family:var(--display);font-size:22px}
+.tally small{font-size:12px;color:var(--muted)}
+footer{font-size:13px;color:var(--muted);text-align:center;line-height:1.5}
+.toast{font-size:14px;color:var(--ok)}
+.op{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){.bar .t i,.opt{transition:none}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">Hub do Conhecimento · <b>PMI-PE</b></div>
+    <button class="pill" id="pillTap" type="button" style="cursor:pointer;background:transparent;font:inherit" aria-label="XVI CGPL 2026">XVI CGPL 2026</button>
+  </header>
+
+  <!-- 1. START -->
+  <section id="start" class="card">
+    <h1>Qual é o seu perfil <span class="cM">M</span>.<span class="cO">O</span>.<span class="cR">R</span>.<span class="cE">E</span>.?</h1>
+    <p class="lead" style="margin-top:10px">Um aquecimento, 8 dilemas reais de projeto e seu perfil no final. Cerca de 4 minutos.</p>
+    <div class="pillars" style="margin-top:18px">
+      <div class="pM">M<small>Manage Perceptions</small></div>
+      <div class="pO">O<small>Own Success</small></div>
+      <div class="pR">R<small>Reassess</small></div>
+      <div class="pE">E<small>Expand</small></div>
+    </div>
+    <div class="field">
+      <label for="nome">Seu nome ou apelido</label>
+      <input type="text" id="nome" maxlength="40" placeholder="Ex.: Carlito" autocomplete="off">
+    </div>
+    <div class="field">
+      <label for="email">E-mail para receber seu resultado (opcional)</label>
+      <input type="email" id="email" maxlength="80" placeholder="voce@exemplo.com" autocomplete="off" inputmode="email">
+      <div class="hint">Você recebe seu perfil, os encaminhamentos e os materiais do M.O.R.E. na hora. Usamos o e-mail só para isso.</div>
+    </div>
+    <div class="field">
+      <label>Na sua prática hoje, qual destes você <strong>menos</strong> faz?</label>
+      <div class="opts" id="selfOpts">
+        <button class="opt" data-k="M">Cuidar de como os stakeholders percebem o projeto</button>
+        <button class="opt" data-k="O">Medir o projeto pelo valor gerado, não só pela entrega</button>
+        <button class="opt" data-k="R">Reavaliar o plano quando o cenário muda</button>
+        <button class="opt" data-k="E">Conectar o projeto à estratégia da organização</button>
+      </div>
+      <div class="hint">Isso ajuda a personalizar seu resultado.</div>
+    </div>
+    <div class="row" style="margin-top:18px">
+      <button class="btn" id="btnStart">Começar</button>
+    </div>
+  </section>
+
+  <!-- 2. INTRO: O QUE É M.O.R.E. -->
+  <section id="intro" class="card" hidden>
+    <span class="eyebrow">Antes de começar</span>
+    <h2 style="margin-top:6px">O que é M.O.R.E.?</h2>
+    <p style="margin:12px 0 0">Mindset lançado pelo PMI em 2025, a partir da pesquisa <strong>Maximizing Project Success</strong>. A mensagem central: entregar no prazo, no custo e no escopo é <em>sucesso do gerenciamento</em>. <strong>Sucesso do projeto</strong> é o valor real e percebido pelos stakeholders. Nas palavras do PMI, é "um chamado à ação para que profissionais de projetos assumam accountability" além das métricas pré-definidas.</p>
+    <div class="def">
+      <div class="item"><span class="letter cM">M</span><div><div class="name">Manage Perceptions · Gerenciar percepções</div><div class="desc">Os stakeholders precisam perceber que o resultado vale o investimento. Percepção é parte do trabalho.</div></div></div>
+      <div class="item"><span class="letter cO">O</span><div><div class="name">Own Project Success · Ser dono do sucesso do projeto</div><div class="desc">Assumir a responsabilidade pelo valor do projeto, além do sucesso do gerenciamento.</div></div></div>
+      <div class="item"><span class="letter cR">R</span><div><div class="name">Relentlessly Reassess · Reavaliar sem parar</div><div class="desc">Mudança é inevitável. Revisar os parâmetros do projeto conforme a percepção de valor evolui.</div></div></div>
+      <div class="item"><span class="letter cE">E</span><div><div class="name">Expand Perspective · Ampliar a perspectiva</div><div class="desc">Enxergar como o projeto se encaixa nos objetivos maiores da organização.</div></div></div>
+    </div>
+    <div class="row" style="margin-top:20px">
+      <button class="btn" id="btnIntro">Entendi, vamos ao aquecimento</button>
+    </div>
+  </section>
+
+  <!-- 3. WARM-UP PUZZLE (unscored) -->
+  <section id="warm" class="card" hidden>
+    <span class="eyebrow">Aquecimento · não vale ponto</span>
+    <h2 style="margin-top:6px">Combine cada pilar com seu objetivo</h2>
+    <p class="lead" style="font-size:16px;margin-top:8px">Toque na frase que completa o pilar destacado.</p>
+    <div class="match" id="warmBox"></div>
+    <div class="row" style="margin-top:16px;justify-content:space-between">
+      <span class="m-status" id="warmStatus"></span>
+      <button class="btn" id="btnWarmNext" hidden>Começar os dilemas</button>
+    </div>
+  </section>
+
+  <!-- 4. QUIZ -->
+  <section id="quiz" class="card" hidden>
+    <div class="progress" id="prog"></div>
+    <div class="q-head" style="margin-top:14px"><span id="qnum">Dilema 1 de 8</span><span class="tag" id="qtag">Pilar M</span></div>
+    <p class="hint" id="qmulti" hidden>Esta pergunta tem mais de uma resposta correta. Marque todas as que se aplicam e confirme.</p>
+    <p class="question" id="qtext"></p>
+    <div class="opts" id="opts"></div>
+    <div class="feedback" id="fb" hidden><b>O que o M.O.R.E. diz</b><span id="fbtext"></span><span class="src" id="fbsrc"></span></div>
+    <div class="row" style="margin-top:16px;justify-content:space-between">
+      <button class="btn ghost" id="btnPrev">← Anterior</button>
+      <span class="row"><button class="btn" id="btnConfirm" hidden>Confirmar resposta</button><button class="btn" id="btnNext" hidden>Próximo dilema</button></span>
+    </div>
+  </section>
+
+  <!-- 5. RESULT -->
+  <section id="result" class="card" hidden>
+    <div class="result-title" id="rwho">Seu perfil</div>
+    <h2 class="profile" id="rname"></h2>
+    <p class="lead" id="rtag"></p>
+    <p class="eyebrow" id="rscore" style="margin-top:12px"></p>
+    <div class="viz"><svg id="donut" viewBox="0 0 120 120" width="120" height="120" role="img" aria-label="Distribuição dos pontos por pilar"></svg><div class="bars" id="bars" style="margin-top:0;flex:1;min-width:0"></div></div>
+    <div class="insight">
+      <div class="ins" id="insStrong"></div>
+      <div class="ins" id="insWeak"></div>
+      <div class="ins dev" id="insDev"></div>
+    </div>
+    <p class="hint" id="remail" hidden></p>
+    <div class="row" style="margin-top:18px">
+      <button class="btn" id="btnNextP">Próximo participante</button>
+      <button class="btn ghost" id="btnBonus">Bônus: framework LEARN</button>
+      <button class="btn ghost" id="btnCopy">Copiar resultado</button>
+      <span class="toast" id="toast"></span>
+    </div>
+    <div style="margin-top:22px">
+      <div class="result-title">Os cinco perfis M.O.R.E.</div>
+      <div class="def" id="allProfiles" style="margin-top:10px"></div>
+    </div>
+  </section>
+
+  <!-- 6. BONUS: LEARN -->
+  <section id="bonus" class="card" hidden>
+    <span class="eyebrow">Bônus · Manage Perceptions</span>
+    <h2 style="margin-top:6px">Framework LEARN</h2>
+    <p class="lead" style="font-size:16px;margin-top:8px">Cinco passos do PMI para engajar stakeholders. Combine cada passo com sua descrição.</p>
+    <div class="match" id="bonusBox"></div>
+    <div class="row" style="margin-top:16px;justify-content:space-between">
+      <span class="m-status" id="bonusStatus"></span>
+      <button class="btn" id="btnBonusDone" hidden>Voltar ao resultado</button>
+    </div>
+  </section>
+
+  <footer>Uma experiência do Hub do Conhecimento · PMI Pernambuco · XVI Conferência de Gestão, Projetos e Liderança 2026<br>Conteúdo baseado em PMI Essentials: M.O.R.E. – Maximizing Project Success (PMI, 2025). M.O.R.E. e PMI Talent Triangle® são do Project Management Institute. Versão 1.0 · hospedada.</footer>
+
+  <section class="admin" id="adminPin" hidden>
+    <h3>Área da equipe do Hub</h3>
+    <label for="pin">PIN da equipe</label>
+    <div class="row"><input type="text" id="pin" inputmode="numeric" maxlength="6" placeholder="••••" style="max-width:140px" autocomplete="off"><button class="btn sm" id="btnPin">Entrar</button><button class="btn ghost sm" id="btnPinCancel">Cancelar</button><span class="hint" id="pinMsg"></span></div>
+  </section>
+  <section class="admin" id="admin" hidden>
+    <div class="row" style="justify-content:space-between"><h3>Área da equipe do Hub</h3><button class="btn ghost sm" id="btnAdminClose">Fechar</button></div>
+    <div class="result-title">Consolidado de todos os aparelhos (planilha)</div>
+    <div class="tally" id="tallyAll"><div style="grid-column:1/-1;border:0"><small>Carregando…</small></div></div>
+    <div class="row"><a class="btn ghost sm" id="sheetLink" href="#" target="_blank" rel="noopener" style="text-decoration:none;display:inline-grid;place-items:center">Abrir planilha</a><button class="btn ghost sm" id="btnStats">Atualizar</button><span class="hint" id="statsMsg"></span></div>
+    <div class="result-title" style="margin-top:8px">Registros apenas deste aparelho (reserva offline)</div>
+    <div class="tally" id="tally"></div>
+    <div class="row"><button class="btn ghost sm" id="btnExport">Baixar participantes (CSV)</button><button class="btn ghost sm" id="btnExportCopy">Copiar CSV</button><button class="btn ghost sm" id="btnReset">Zerar registros</button></div>
+    <span class="hint" id="opCount"></span>
+    <span class="hint">Para abrir esta área: toque 5 vezes em "XVI CGPL 2026" no topo e digite o PIN da equipe. Os registros completos ficam na planilha do Google; o CSV local é só reserva caso a internet caia.</span>
+  </section>
+</div>
+
+<script>
+/* ===== CONFIGURAÇÃO (edite aqui) ===== */
+const CONFIG = {
+  ENDPOINT: 'https://script.google.com/macros/s/AKfycbywnMUxJUrBXC0XIGePB9EGXaO3NGM0LSj3dMgzGwr8WMSxj_bRGfAUY-Vy-M6c7Tu2TA/exec',   // termina em /exec
+  SHEET_URL: 'https://docs.google.com/spreadsheets/d/1y9z1J0nB7ulQerTCQIm25K31Z8PeCnOoRiczJZi12u0/edit',     // só para o botão "Abrir planilha" da equipe
+  PIN: '2026'                                    // PIN da área da equipe
+};
+/* ===================================== */
+const SRC = 'Fonte: PMI Essentials M.O.R.E. – Maximizing Project Success';
+const ACT = {
+  M:['Agende 15 minutos com o patrocinador para perguntar o que ele espera ver, não o que o plano prevê mostrar.','Comunique incidentes antes de ser perguntado: o que houve, impacto real e o que já foi feito.','Aplique o LEARN com um stakeholder difícil: ouvir, empatizar, analisar, responder, negociar.'],
+  O:['Troque um indicador de progresso por um indicador que oriente decisão (ex.: adoção, tempo de ciclo do cliente).','Combine com o patrocinador o que é sucesso do negócio antes de falar de prazo e custo.','Volte três meses depois do encerramento e pergunte à área: o projeto gerou valor?'],
+  R:['Coloque no cronograma uma reavaliação de premissas a cada marco, não só na crise.','Na próxima restrição (orçamento, pessoas), liste três alternativas antes de registrar o risco.','Defina um MVP do seu projeto atual: o que provaria valor com 60% do orçamento?'],
+  E:['Escreva em uma frase qual objetivo estratégico o seu projeto serve. Se não conseguir, converse com a liderança.','Mapeie quem mais é impactado além do cliente direto: outras áreas, clientes finais, sociedade.','Pergunte-se a cada mudança de prioridade da empresa: meu escopo ainda serve a essa estratégia?']
+};
+const P = {
+  M:{name:'Manage Perceptions', pt:'Gerenciar percepções', color:'var(--roxo)', profile:'Influenciador de Stakeholders', tag:'Você entende que um projeto também é uma narrativa. Ouve antes de explicar, comunica antes de ser cobrado e cuida de como o valor é percebido.', dev:'Antes de apresentar dados, pergunte a cada stakeholder o que sucesso significa para ele.'},
+  O:{name:'Own Project Success', pt:'Ser dono do sucesso', color:'var(--ciano)', profile:'Dono do Resultado', tag:'Prazo, custo e escopo não te bastam. Você mede o projeto pelo que ele mudou para quem o usa e para o negócio.', dev:'Use métricas que orientem decisões, não só que registrem progresso. E volte três meses depois para perguntar: gerou valor?'},
+  R:{name:'Relentlessly Reassess', pt:'Reavaliar sem parar', color:'var(--laranja)', profile:'Líder Adaptativo', tag:'Corte de orçamento, congelamento de contratações, IA mudando o jogo: você reprioriza em vez de esticar o plano antigo.', dev:'Quando a restrição chegar, pergunte "como entrego valor com o que tenho?" em vez de documentar o risco e esperar.'},
+  E:{name:'Expand Perspective', pt:'Ampliar a perspectiva', color:'var(--tan)', profile:'Estrategista de Negócio', tag:'Você enxerga o projeto dentro da estratégia da organização e tem coragem de pausar quando o alinhamento se perde.', dev:'Em cada projeto, escreva em uma frase qual objetivo estratégico ele serve. Se não conseguir, é hora de conversar com a liderança.'},
+  ALL:{profile:'M.O.R.E. Integral', tag:'Equilíbrio entre os quatro pilares. É o perfil que o PMI descreve como o profissional de projetos do futuro.'}
+};
+
+const WARM = [
+  {l:'Gerenciar percepções', r:'Envolver as partes interessadas para alinhar sobre o valor percebido do projeto'},
+  {l:'Sucesso do projeto além do sucesso do gerenciamento', r:'Concentrar-se em entregar os resultados que mais importam para as partes interessadas'},
+  {l:'Reavaliar implacavelmente os parâmetros do projeto', r:'Revisar os planos para atender às necessidades e condições de mercado em evolução'},
+  {l:'Expandir a perspectiva', r:'Alinhar as metas do projeto com os objetivos maiores da empresa'}
+];
+const LEARN = [
+  {l:'L · Listen (Ouvir)', r:'Receber e entender ativamente a contribuição das partes interessadas para criar confiança e clareza'},
+  {l:'E · Empathize (Empatizar)', r:'Entender as perspectivas e preocupações das partes interessadas para promover a colaboração'},
+  {l:'A · Analyze (Analisar)', r:'Avaliar informações para tomar decisões informadas e priorizar ações'},
+  {l:'R · Respond (Responder)', r:'Tomar as ações apropriadas com base na análise e nas necessidades das partes interessadas'},
+  {l:'N · Negotiate (Negociar)', r:'Chegar a acordos para alinhar as expectativas das partes interessadas e garantir o sucesso do projeto'}
+];
+
+const Q = [
+ {p:'M', q:'Você entregou no prazo, abaixo do orçamento e atendeu a todas as especificações. Qual cenário é a maior ameaça para o seu projeto ser visto como bem-sucedido?',
+  o:[['Os usuários finais reclamam que a solução não resolve as dores do dia a dia deles.',2],
+     ['O patrocinador elogia a qualidade técnica, mas quer um lançamento mais rápido da próxima vez.',1],
+     ['A equipe de finanças questiona um item do seu relatório orçamentário final.',0]],
+  f:'Quando as partes interessadas não veem valor nos resultados, métricas perfeitas não salvam a reputação do projeto.', s:SRC+', Verificação de conhecimento'},
+ {p:'O', q:'Projeto entregue no prazo, no custo e no escopo. Três meses depois, a área de negócio quase não usa o sistema. Qual sua reação?',
+  o:[['Fiz minha parte: o escopo aprovado foi entregue. Adoção é problema da área.',0],
+     ['Fico incomodado, mas o projeto já foi encerrado formalmente.',1],
+     ['Procuro a área para entender o que faltou e levo o aprendizado adiante. Esse projeto não foi um sucesso.',2]],
+  f:'A definição de sucesso evoluiu: satisfação das partes interessadas e entrega de valor, além de prazo e orçamento. O GP é dono do valor, não só da entrega.', s:SRC+', Lição 5'},
+ {p:'R', q:'Você está no 6º mês de uma transformação digital de 18 meses e perde 40% do orçamento no próximo trimestre. A liderança diz: "descubra como entregar algo valioso com o que você tem". O escopo tem portal do cliente (60%), app móvel (30%), integração de backend (20%), painel de relatórios e treinamento (não iniciados). Qual é a sua resposta?',
+  o:[['Pivotar para uma versão mínima viável que entregue o valor central mais rápido e com menos investimento.',2],
+     ['Concentrar tudo em terminar o portal do cliente e pausar o resto.',1],
+     ['Cortar o escopo proporcionalmente em todas as entregas: 60% de tudo.',0],
+     ['Documentar que não é possível entregar valor com o orçamento reduzido e recomendar o cancelamento.',0]],
+  f:'Resposta empreendedora: repensar o que significa "valioso" e entregar um escopo menor que prove o conceito, valide a abordagem e crie base para investimento futuro.', s:SRC+', Lição 13'},
+ {p:'E', q:'Faltam 14 meses no seu projeto de análise para as operações norte-americanas, sem requisitos multilíngue ou multimoeda. A liderança anuncia que a nova prioridade estratégica é a Ásia-Pacífico, o que levaria mais de 6 meses para incluir. O que você faz?',
+  o:[['Solicito uma pausa para avaliar o alinhamento estratégico antes de prosseguir.',2],
+     ['Construo o que está planejado, mas com uma arquitetura que possa ser estendida para a Ásia-Pacífico depois.',1],
+     ['Continuo como planejado: assumi compromissos de entrega e mudar agora atrapalharia o cronograma.',0],
+     ['Proponho imediatamente a inclusão dos requisitos da Ásia-Pacífico, mesmo atrasando a entrega.',0]],
+  f:'Pedir uma pausa para avaliar o alinhamento mostra acuidade de negócio, dá à liderança uma escolha em vez de assumir, protege recursos e posiciona o GP como parceiro estratégico.', s:SRC+', Lição 12'},
+ {p:'M', q:'Você entregou excelentes resultados, mas duas partes interessadas têm visões muito diferentes sobre o sucesso do projeto. Qual deve ser sua primeira prioridade?',
+  o:[['Entender o ponto de vista de cada uma e o que sucesso significa para elas.',2],
+     ['Apresentar dados mais detalhados para comprovar o sucesso objetivo do projeto.',1],
+     ['Focar na parte interessada que já vê o projeto positivamente.',0]],
+  f:'Percepções são moldadas por experiências individuais e intuição. Entenda a perspectiva de cada stakeholder antes de tentar moldar a narrativa do sucesso.', s:SRC+', Verificação rápida: moldando a narrativa do sucesso'},
+ {p:'O', q:'Seu projeto tem métricas e painéis detalhados, mas as partes interessadas ainda não parecem convencidas do valor. Segundo a pesquisa do PMI, qual é a razão mais provável?',
+  o:[['As métricas só acompanham o progresso; não orientam as decisões do projeto.',2],
+     ['O sistema de medição é complexo demais para o tamanho do projeto.',1],
+     ['Faltam dados mais detalhados e KPIs adicionais para rastrear.',0]],
+  f:'Sistemas de medição devem orientar decisões, não apenas registrá-las. Na pesquisa do PMI, as pontuações de sucesso dobraram quando as métricas realmente influenciaram as escolhas do projeto.', s:SRC+', Verificação rápida: o poder dos sistemas de medição'},
+ {p:'R', q:'Seu projeto precisa de um recurso crítico, mas a empresa congelou as contratações. Qual é a sua reação?',
+  o:[['"Vou explorar se podemos realocar recursos existentes ou usar contratados dentro do orçamento atual."',2],
+     ['"E se automatizarmos parte da carga de trabalho ou fizermos parceria com outra equipe que tenha capacidade?"',2],
+     ['"Não podemos prosseguir sem headcount adicional. Vou documentar isso como um risco."',0],
+     ['"Vou esperar o congelamento ser levantado antes de avançar."',0]],
+  f:'Realocar, contratar dentro do orçamento, automatizar ou fazer parceria são soluções criativas dentro das restrições. Documentar o risco e esperar é mentalidade de vítima: esperar que outra pessoa resolva.', s:SRC+', Lição 13'},
+ {p:'E', q:'Ao definir os indicadores de sucesso do projeto, o que você inclui?',
+  o:[['Além de prazo, custo e escopo, os resultados de negócio que o projeto deve mover: receita, custo operacional, experiência, impacto social e ambiental.',2],
+     ['Prazo, custo, escopo e satisfação do cliente.',1],
+     ['Prazo, custo e escopo.',0]],
+  f:'O projeto é um meio. Os indicadores devem apontar para o fim: o objetivo estratégico da organização.', s:'Baseado na Lição 10: métricas alinham o projeto às expectativas das partes interessadas'}
+];
+
+const $ = id => document.getElementById(id);
+let i = 0, score = {M:0,O:0,R:0,E:0}, nome = '', email = '', lastKey = null, selfWeak = null, st = [];
+const shuffle = a => a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
+
+function show(id){ ['start','intro','warm','quiz','result','bonus'].forEach(s => $(s).hidden = s !== id); window.scrollTo({top:0}); }
+
+/* ---------- matching puzzle ---------- */
+function matchGame(box, statusEl, pairs, onDone){
+  let k = 0, errors = 0; const order = shuffle(pairs.map((_,n)=>n)); const used = new Set();
+  function step(){
+    if(k >= pairs.length){ statusEl.textContent = errors === 0 ? 'Perfeito, todos de primeira.' : `Concluído com ${errors} tentativa${errors>1?'s':''} a mais.`; onDone(); return; }
+    const cur = pairs[k];
+    box.innerHTML = `<div class="m-left"><span class="eyebrow">${k+1} de ${pairs.length}</span>${cur.l}</div><div class="chips">${order.map(n=>`<button class="chip ${used.has(n)?'used':''}" data-n="${n}" ${used.has(n)?'disabled':''}>${pairs[n].r}</button>`).join('')}</div>`;
+    statusEl.textContent = '';
+    box.querySelectorAll('.chip:not([disabled])').forEach(b => b.addEventListener('click', () => {
+      const n = +b.dataset.n;
+      if(n === k){ b.classList.add('ok'); used.add(n); box.querySelectorAll('.chip').forEach(x=>x.disabled=true); setTimeout(()=>{k++; step();}, 650); }
+      else { errors++; b.classList.add('no'); b.disabled = true; statusEl.textContent = 'Não é essa. Tente outra.'; }
+    }));
+  }
+  step();
+}
+
+/* ---------- quiz ---------- */
+function renderProg(){ $('prog').innerHTML = Q.map((_,k)=>`<span class="${k<i?'done':''}"></span>`).join(''); }
+function isMulti(q){ return q.o.filter(o=>o[1]===2).length > 1; }
+function renderQ(){
+  const q = Q[i]; renderProg(); const multi = isMulti(q);
+  if(!st[i]) st[i] = { opts: shuffle(q.o.map(o=>({t:o[0],s:o[1]}))), chosen: multi ? [] : null, pts: null };
+  $('qnum').textContent = `Dilema ${i+1} de ${Q.length}`;
+  $('qtag').textContent = `Pilar ${q.p} · ${P[q.p].pt}`;
+  $('qtext').textContent = q.q; $('qmulti').hidden = !multi;
+  $('opts').innerHTML = st[i].opts.map((o,k)=>`<button class="opt" data-k="${k}" data-s="${o.s}">${o.t}</button>`).join('');
+  $('fb').hidden = true; $('btnNext').hidden = true; $('btnPrev').hidden = i === 0; $('btnConfirm').hidden = !multi || st[i].pts !== null;
+  $('opts').querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => choose(b)));
+  if(st[i].pts !== null) lock();
+}
+function choose(b){
+  if(st[i].pts !== null) return;
+  const k = +b.dataset.k;
+  if(isMulti(Q[i])){ const c = st[i].chosen; const at = c.indexOf(k); at >= 0 ? c.splice(at,1) : c.push(k); b.classList.toggle('sel', at < 0); return; }
+  st[i].chosen = k; st[i].pts = st[i].opts[k].s; lock(); $('btnNext').focus();
+}
+function confirmMulti(){
+  const c = st[i].chosen; if(!c.length) return;
+  const correct = st[i].opts.map((o,k)=>o.s===2?k:-1).filter(k=>k>=0);
+  const wrong = c.some(k=>!correct.includes(k)), all = correct.every(k=>c.includes(k));
+  st[i].pts = wrong ? 0 : all ? 2 : 1; lock(); $('btnNext').focus();
+}
+function lock(){
+  const s = st[i].pts, multi = isMulti(Q[i]); const sel = multi ? st[i].chosen : [st[i].chosen];
+  $('opts').querySelectorAll('.opt').forEach(x => {
+    x.disabled = true; const k = +x.dataset.k;
+    if(+x.dataset.s === 2) x.classList.add('best');
+    if(sel.includes(k)){ x.classList.add('sel'); if(+x.dataset.s < 2) x.classList.add('wrong'); }
+  });
+  $('fbtext').textContent = Q[i].f;
+  const why = multi ? (s === 2 ? '+2 pontos: você marcou todas as corretas' : s === 1 ? '+1 ponto: faltou marcar uma resposta correta' : '0 pontos: havia uma opção incorreta entre as marcadas') : (s === 2 ? '+2 pontos' : s === 1 ? '+1 ponto (resposta parcial)' : '0 pontos');
+  $('fbsrc').textContent = why + ` no pilar ${Q[i].p} · ` + Q[i].s;
+  $('fb').hidden = false; $('btnConfirm').hidden = true;
+  $('btnNext').hidden = false; $('btnNext').textContent = i === Q.length-1 ? 'Ver meu perfil' : 'Próximo dilema';
+}
+
+/* ---------- result ---------- */
+function result(){
+  const keys = ['M','O','R','E'];
+  score = {M:0,O:0,R:0,E:0}; Q.forEach((q,k)=>{ if(st[k] && st[k].pts !== null) score[q.p] += st[k].pts; });
+  const max = Math.max(...keys.map(k=>score[k])), min = Math.min(...keys.map(k=>score[k]));
+  const tops = keys.filter(k=>score[k]===max), lows = keys.filter(k=>score[k]===min);
+  const total = keys.reduce((a,k)=>a+score[k],0);
+  // perfil: pilar mais forte; empate desempatado pela autoavaliação (o pilar que a pessoa menos pratica nunca vence)
+  let cand = tops.filter(k => k !== selfWeak); if(!cand.length) cand = tops;
+  const key = total === 16 ? 'ALL' : cand[0];
+  lastKey = key;
+  const prof = key === 'ALL' ? P.ALL : P[key];
+  const level = total >= 15 ? 'Mestre M.O.R.E.' : total >= 12 ? 'Praticante avançado' : total >= 8 ? 'Em desenvolvimento' : 'Começando a jornada';
+  $('rscore').textContent = `Pontuação ${total}/16 · ${level}`;
+  const weakKey = selfWeak || lows[0];
+  $('rwho').textContent = nome ? `${nome}, seu perfil é` : 'Seu perfil é';
+  $('rname').textContent = prof.profile; $('rtag').textContent = prof.tag;
+  $('bars').innerHTML = keys.map(k=>`<div class="bar"><span class="k" style="color:${P[k].color}">${k}</span><span class="t"><i data-w="${score[k]/4*100}" style="background:${P[k].color}"></i></span><span class="v">${score[k]}/4</span><span class="lbl">${P[k].name}</span></div>`).join('');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>$('bars').querySelectorAll('i').forEach(el=>el.style.width=el.dataset.w+'%')));
+  drawDonut(keys.map(k=>({v:score[k],c:P[k].color})), total);
+    const sk = key === 'ALL' ? [] : tops.slice(0,2);
+  $('insStrong').innerHTML = key === 'ALL'
+    ? `<div class="top"><span class="badge" style="background:var(--roxo)">★</span><div><div class="ttl">Seu ponto forte</div><div class="big">Os quatro pilares</div></div></div><p>Equilíbrio raro: 4 de 4 em gerenciar percepções, ser dono do sucesso, reavaliar sem parar e ampliar a perspectiva.</p>`
+    : `<div class="top"><span class="badges">${sk.map(k=>`<span class="badge" style="background:${P[k].color}">${k}</span>`).join('')}</span><div><div class="ttl">Seu ponto forte</div><div class="big">${sk.map(k=>P[k].pt).join(' e ')}</div></div></div><p>${sk.map(k=>P[k].name + ': ' + score[k] + ' de 4').join(' · ')}.</p>`;
+  $('insWeak').innerHTML = `<div class="top"><span class="badge" style="background:${P[weakKey].color}">${weakKey}</span><div><div class="ttl">Para desenvolver</div><div class="big">${P[weakKey].pt}</div></div></div><p>${P[weakKey].dev}</p>${selfWeak ? `<div class="self">Você mesmo apontou este pilar como o que menos pratica hoje${selfWeak!==weakKey?' ('+P[selfWeak].pt.toLowerCase()+')':''}.</div>` : ''}`;
+  $('insDev').style.setProperty('--acc', P[weakKey].color);
+  $('insDev').innerHTML = `<div class="ttl">Encaminhamentos · por onde começar em ${P[weakKey].pt.toLowerCase()}</div><ul class="steps">${ACT[weakKey].map((a,n)=>`<li><i>${n+1}</i><span>${a}</span></li>`).join('')}</ul>`;
+  $('remail').hidden = !email; $('remail').textContent = email ? `Enviando seu resultado para ${email}…` : '';
+  window._share = `Meu perfil M.O.R.E. é "${prof.profile}" · ${total}/16 (M ${score.M} · O ${score.O} · R ${score.R} · E ${score.E}). Hub do Conhecimento · PMI-PE · XVI CGPL 2026`;
+  window._share += '\nPonto forte: ' + (sk.length ? sk.map(k=>P[k].pt).join(' e ') : 'os quatro pilares') + '\nPara desenvolver: ' + P[weakKey].pt + '\nEncaminhamentos:\n- ' + ACT[weakKey].join('\n- ');
+  $('allProfiles').innerHTML = keys.map(k=>`<div class="item" style="${key===k?'background:var(--soft);border-radius:10px;padding:8px':''}"><span class="letter" style="color:${P[k].color}">${k}</span><div><div class="name">${P[k].profile}${key===k?' · você':''}</div><div class="desc">${P[k].tag}</div></div></div>`).join('') +
+    `<div class="item" style="${key==='ALL'?'background:var(--soft);border-radius:10px;padding:8px':''}"><span class="letter">★</span><div><div class="name">${P.ALL.profile}${key==='ALL'?' · você':''}</div><div class="desc">16/16: ${P.ALL.tag}</div></div></div>`;
+  saveParticipant(prof.profile); tally(key);
+  sendResult({nome, email, perfil: prof.profile, pontuacao: total, nivel: level, M: score.M, O: score.O, R: score.R, E: score.E, forte: sk.length ? sk.map(k=>P[k].pt).join(' e ') : 'Os quatro pilares', desenvolver: P[weakKey].pt, dica: P[weakKey].dev, acoes: ACT[weakKey], autoavaliacao: selfWeak ? P[selfWeak].pt : ''});
+  show('result');
+}
+function drawDonut(parts, total){
+  const svg = $('donut'); const C = 60, R = 46, W = 16; let a0 = -Math.PI/2; let out = '';
+  if(total === 0){ svg.innerHTML = `<circle cx="60" cy="60" r="${R}" fill="none" stroke="var(--line)" stroke-width="${W}"/><text x="60" y="65" text-anchor="middle" font-size="16">0</text>`; return; }
+  parts.forEach(p => {
+    if(!p.v) return; const a1 = a0 + p.v/total*2*Math.PI;
+    if(p.v === total){ out += `<circle cx="60" cy="60" r="${R}" fill="none" stroke="${p.c}" stroke-width="${W}"/>`; a0 = a1; return; }
+    const x0 = C+R*Math.cos(a0), y0 = C+R*Math.sin(a0), x1 = C+R*Math.cos(a1), y1 = C+R*Math.sin(a1), lg = a1-a0 > Math.PI ? 1 : 0;
+    out += `<path d="M${x0.toFixed(2)} ${y0.toFixed(2)} A${R} ${R} 0 ${lg} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}" fill="none" stroke="${p.c}" stroke-width="${W}"/>`; a0 = a1;
+  });
+  svg.innerHTML = out + `<text x="60" y="58" text-anchor="middle" font-size="20">${total}</text><text x="60" y="74" text-anchor="middle" font-size="9" style="fill:var(--muted);font-weight:600">de 16</text>`;
+}
+const online = () => /^https:\/\/script\.google\.com\//.test(CONFIG.ENDPOINT);
+async function sendResult(rec){
+  if(!online()){ $('remail').textContent = rec.email ? 'Endpoint não configurado: resultado guardado só neste aparelho.' : ''; $('remail').hidden = !rec.email; return; }
+  rec.origem = location.hostname || 'local'; rec.agente = navigator.userAgent.slice(0,80);
+  try {
+    const r = await fetch(CONFIG.ENDPOINT, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(rec) });
+    let j = {}; try { j = await r.json(); } catch(e){}
+    if(j.ok){ $('remail').textContent = rec.email ? (j.emailed ? `Resultado enviado para ${rec.email}. Confira também o spam.` : `Registrado. O e-mail não pôde ser enviado agora (${j.emailError||'cota'}); o Hub enviará depois.`) : 'Resultado registrado.'; markSent(true); }
+    else throw new Error(j.error || 'resposta inválida');
+  } catch(e){
+    $('remail').textContent = (rec.email ? `Não foi possível enviar agora para ${rec.email}. ` : '') + 'Resultado guardado neste aparelho; a equipe envia depois.';
+    markSent(false);
+  }
+  $('remail').hidden = false;
+}
+function markSent(ok){ try { const l = JSON.parse(localStorage.getItem('more-participantes')||'[]'); if(l.length){ l[l.length-1].enviado = ok ? 'sim' : 'nao'; localStorage.setItem('more-participantes', JSON.stringify(l)); } } catch(e){} }
+async function loadStats(){
+  if(!online()){ $('tallyAll').innerHTML = '<div style="grid-column:1/-1;border:0"><small>Endpoint não configurado.</small></div>'; return; }
+  $('statsMsg').textContent = 'Atualizando…';
+  try {
+    const r = await fetch(CONFIG.ENDPOINT + '?action=stats', {cache:'no-store'}); const j = await r.json();
+    const c = j.perfis || {};
+    $('tallyAll').innerHTML = ['M','O','R','E'].map(k=>`<div><strong style="color:${P[k].color}">${c[P[k].profile]||0}</strong><small>${P[k].profile.split(' ')[0]}</small></div>`).join('') +
+      `<div style="grid-column:1/-1"><strong>${c[P.ALL.profile]||0}</strong><small>M.O.R.E. Integral</small></div>` +
+      `<div style="grid-column:1/-1;border:0;padding:4px"><small>${j.total||0} participante${j.total===1?'':'s'} · ${j.emails||0} e-mails enviados · média ${j.media||0}/16</small></div>`;
+    $('statsMsg').textContent = 'Atualizado ' + new Date().toLocaleTimeString('pt-BR');
+  } catch(e){ $('statsMsg').textContent = 'Sem conexão com a planilha.'; }
+}
+function saveParticipant(profile){
+  try { const l = JSON.parse(localStorage.getItem('more-participantes')||'[]'); l.push({ts:new Date().toISOString(), nome, email, perfil:profile, M:score.M, O:score.O, R:score.R, E:score.E}); localStorage.setItem('more-participantes', JSON.stringify(l)); } catch(e){}
+  opCount();
+}
+function opCount(){ let n = 0; try { n = JSON.parse(localStorage.getItem('more-participantes')||'[]').length; } catch(e){} $('opCount').textContent = n ? `${n} registro${n>1?'s':''} neste aparelho` : ''; }
+function tally(add){
+  let t = {M:0,O:0,R:0,E:0,ALL:0};
+  try { t = Object.assign(t, JSON.parse(localStorage.getItem('more-tally')||'{}')); } catch(e){}
+  if(add){ t[add]=(t[add]||0)+1; try{ localStorage.setItem('more-tally', JSON.stringify(t)); }catch(e){} }
+  const n = t.M+t.O+t.R+t.E+t.ALL;
+  $('tally').innerHTML = ['M','O','R','E'].map(k=>`<div><strong style="color:${P[k].color}">${t[k]}</strong><small>${P[k].profile.split(' ')[0]}</small></div>`).join('') +
+    (t.ALL ? `<div style="grid-column:1/-1"><strong>${t.ALL}</strong><small>M.O.R.E. Integral</small></div>` : '') +
+    `<div style="grid-column:1/-1;border:0;padding:4px"><small>${n} participante${n===1?'':'s'} até agora</small></div>`;
+}
+function copyText(text, toastEl){
+  const done = () => { toastEl.textContent = 'Copiado'; setTimeout(()=>toastEl.textContent='',2000); };
+  (navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(text) : Promise.reject()).then(done).catch(()=>{ toastEl.textContent = text.length > 120 ? 'Não foi possível copiar neste navegador.' : text; });
+}
+
+/* ---------- wiring ---------- */
+$('selfOpts').querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => { $('selfOpts').querySelectorAll('.opt').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); selfWeak = b.dataset.k; }));
+$('btnStart').addEventListener('click', () => {
+  nome = $('nome').value.trim(); email = $('email').value.trim();
+  if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ $('email').focus(); $('email').setCustomValidity('x'); $('email').reportValidity && $('email').reportValidity(); $('email').setCustomValidity(''); return; }
+  i = 0; st = []; score = {M:0,O:0,R:0,E:0}; show('intro');
+});
+$('btnIntro').addEventListener('click', () => { $('btnWarmNext').hidden = true; matchGame($('warmBox'), $('warmStatus'), WARM, () => { $('btnWarmNext').hidden = false; $('btnWarmNext').focus(); }); show('warm'); });
+$('btnWarmNext').addEventListener('click', () => { renderQ(); show('quiz'); });
+$('btnNext').addEventListener('click', () => { i++; i < Q.length ? renderQ() : result(); });
+$('btnPrev').addEventListener('click', () => { if(i > 0){ i--; renderQ(); } });
+$('btnConfirm').addEventListener('click', confirmMulti);
+$('btnNextP').addEventListener('click', () => { $('nome').value=''; $('email').value=''; selfWeak=null; $('selfOpts').querySelectorAll('.opt').forEach(x=>x.classList.remove('sel')); show('start'); $('nome').focus(); });
+$('btnCopy').addEventListener('click', () => copyText(window._share, $('toast')));
+$('btnBonus').addEventListener('click', () => { $('btnBonusDone').hidden = true; matchGame($('bonusBox'), $('bonusStatus'), LEARN, () => { $('btnBonusDone').hidden = false; }); show('bonus'); });
+$('btnBonusDone').addEventListener('click', () => show('result'));
+$('btnExport').addEventListener('click', () => {
+  let l = []; try { l = JSON.parse(localStorage.getItem('more-participantes')||'[]'); } catch(e){}
+  if(!l.length){ $('opCount').textContent = 'Nenhum registro ainda neste aparelho.'; return; }
+  const csv = '\ufeff' + ['data;nome;email;perfil;M;O;R;E;enviado'].concat(l.map(r=>[r.ts,r.nome,r.email,r.perfil,r.M,r.O,r.R,r.E,r.enviado||''].map(v=>String(v==null?'':v).replace(/;/g,',')).join(';'))).join('\n');
+  const fname = 'more-participantes-' + new Date().toISOString().slice(0,10) + '.csv';
+  try {
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download = fname; document.body.appendChild(a); a.click(); a.remove();
+    $('opCount').textContent = 'Arquivo gerado.';
+  } catch(e){ copyText(csv, $('opCount')); }
+});
+$('btnExportCopy').addEventListener('click', () => {
+  let l = []; try { l = JSON.parse(localStorage.getItem('more-participantes')||'[]'); } catch(e){}
+  const csv = ['data;nome;email;perfil;M;O;R;E;enviado'].concat(l.map(r=>[r.ts,r.nome,r.email,r.perfil,r.M,r.O,r.R,r.E,r.enviado||''].map(v=>String(v==null?'':v).replace(/;/g,',')).join(';'))).join('\n');
+  copyText(csv, $('opCount'));
+});
+const PIN = CONFIG.PIN; let taps = [], unlocked = false;
+function openAdmin(){ unlocked = true; $('adminPin').hidden = true; $('admin').hidden = false; tally(null); opCount(); $('sheetLink').href = CONFIG.SHEET_URL; loadStats(); $('admin').scrollIntoView({behavior:'smooth'}); }
+$('btnStats').addEventListener('click', loadStats);
+$('pillTap').addEventListener('click', () => {
+  const now = Date.now(); taps = taps.filter(t => now - t < 3000); taps.push(now);
+  if(taps.length >= 5){ taps = []; if(unlocked){ openAdmin(); } else { $('adminPin').hidden = false; $('pin').value=''; $('pinMsg').textContent=''; $('adminPin').scrollIntoView({behavior:'smooth'}); $('pin').focus(); } }
+});
+$('btnPin').addEventListener('click', () => { if($('pin').value.trim() === PIN) openAdmin(); else { $('pinMsg').textContent = 'PIN incorreto.'; $('pin').select(); } });
+$('pin').addEventListener('keydown', e => { if(e.key === 'Enter') $('btnPin').click(); });
+$('btnPinCancel').addEventListener('click', () => { $('adminPin').hidden = true; });
+$('btnAdminClose').addEventListener('click', () => { $('admin').hidden = true; window.scrollTo({top:0}); });
+if(location.hash === '#equipe'){ $('adminPin').hidden = false; }
+$('btnReset').addEventListener('click', () => { if($('btnReset').dataset.arm){ try{ localStorage.removeItem('more-participantes'); localStorage.removeItem('more-tally'); }catch(e){} delete $('btnReset').dataset.arm; $('btnReset').textContent='Zerar registros'; tally(null); opCount(); } else { $('btnReset').dataset.arm='1'; $('btnReset').textContent='Confirmar: apagar tudo?'; setTimeout(()=>{ delete $('btnReset').dataset.arm; $('btnReset').textContent='Zerar registros'; },4000); } });
+opCount();
+</script>
+
+</body>
+</html>
