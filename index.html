@@ -119,6 +119,15 @@ input[type=text],input[type=email]{width:100%;font:inherit;font-size:18px;paddin
 .steps li i{font-style:normal;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:13px;color:#fff;background:var(--acc,var(--roxo))}
 .steps li span{padding-top:3px}
 .self{font-size:13px;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px;margin-top:2px}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:15px;line-height:1.4;margin-top:12px;cursor:pointer}
+.check input{width:22px;height:22px;margin:1px 0 0;flex:0 0 auto;accent-color:var(--roxo)}
+.nps{margin-top:22px;padding:18px;border-radius:14px;background:var(--soft)}
+.nps .scale{display:grid;grid-template-columns:repeat(11,1fr);gap:6px;margin-top:12px}
+.nps .scale button{font:600 15px var(--display);min-height:44px;border-radius:10px;border:1.5px solid var(--line);background:var(--card);color:var(--fg);cursor:pointer;padding:0}
+.nps .scale button.sel{background:var(--roxo);color:var(--accent-fg);border-color:var(--roxo)}
+.nps .ends{display:flex;justify-content:space-between;font-size:12px;color:var(--muted);margin-top:4px}
+.nps textarea{width:100%;font:inherit;font-size:15px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--fg);min-height:64px;resize:vertical;margin-top:12px}
+@media (max-width:420px){.nps .scale{grid-template-columns:repeat(6,1fr)}}
 .admin{border:1px dashed var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
 .admin h3{font-size:16px}
 .mini b{display:block;font-family:var(--display);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
@@ -155,7 +164,9 @@ footer{font-size:13px;color:var(--muted);text-align:center;line-height:1.5}
     <div class="field">
       <label for="email">E-mail para receber seu resultado (opcional)</label>
       <input type="email" id="email" maxlength="80" placeholder="voce@exemplo.com" autocomplete="off" inputmode="email">
-      <div class="hint">Você recebe seu perfil, os encaminhamentos e os materiais do M.O.R.E. na hora. Usamos o e-mail só para isso.</div>
+      <div class="hint">Você recebe seu perfil, os encaminhamentos e os materiais do M.O.R.E. na hora.</div>
+      <label class="check" for="optin"><input type="checkbox" id="optin"><span>Aceito receber comunicações do PMI Pernambuco (eventos, cursos e novidades do capítulo). Opcional; posso cancelar a qualquer momento.</span></label>
+      <div class="hint">Seus dados são usados pelo PMI-PE apenas para enviar este resultado e, se você autorizar acima, comunicações do capítulo. Não compartilhamos com terceiros.</div>
     </div>
     <div class="field">
       <label>Na sua prática hoje, qual destes você <strong>menos</strong> faz?</label>
@@ -227,6 +238,14 @@ footer{font-size:13px;color:var(--muted);text-align:center;line-height:1.5}
       <div class="ins dev" id="insDev"></div>
     </div>
     <p class="hint" id="remail" hidden></p>
+    <div class="nps" id="nps">
+      <div class="result-title">Avalie o jogo</div>
+      <div style="font-family:var(--display);font-weight:600;font-size:17px;margin-top:4px">De 0 a 10, quanto você recomendaria este jogo a um colega?</div>
+      <div class="scale" id="npsScale"></div>
+      <div class="ends"><span>0 · Não recomendaria</span><span>10 · Com certeza</span></div>
+      <textarea id="npsComment" maxlength="300" placeholder="O que faria o jogo ficar melhor? (opcional)"></textarea>
+      <div class="row" style="margin-top:10px"><button class="btn sm" id="btnNps" disabled>Enviar avaliação</button><span class="hint" id="npsMsg"></span></div>
+    </div>
     <div class="row" style="margin-top:18px">
       <button class="btn" id="btnNextP">Próximo participante</button>
       <button class="btn ghost" id="btnBonus">Bônus: framework LEARN</button>
@@ -251,7 +270,7 @@ footer{font-size:13px;color:var(--muted);text-align:center;line-height:1.5}
     </div>
   </section>
 
-  <footer>Uma experiência do Hub do Conhecimento · PMI Pernambuco · XVI Conferência de Gestão, Projetos e Liderança 2026<br>Conteúdo baseado em PMI Essentials: M.O.R.E. – Maximizing Project Success (PMI, 2025). M.O.R.E. e PMI Talent Triangle® são do Project Management Institute. Versão 1.0 · hospedada.</footer>
+  <footer>Uma experiência do Hub do Conhecimento · PMI Pernambuco · XVI Conferência de Gestão, Projetos e Liderança 2026<br>Conteúdo baseado em PMI Essentials: M.O.R.E. – Maximizing Project Success (PMI, 2025). M.O.R.E. e PMI Talent Triangle® são do Project Management Institute. Versão 1.1.</footer>
 
   <section class="admin" id="adminPin" hidden>
     <h3>Área da equipe do Hub</h3>
@@ -355,7 +374,7 @@ const Q = [
 ];
 
 const $ = id => document.getElementById(id);
-let i = 0, score = {M:0,O:0,R:0,E:0}, nome = '', email = '', lastKey = null, selfWeak = null, st = [];
+let i = 0, score = {M:0,O:0,R:0,E:0}, nome = '', email = '', lastKey = null, selfWeak = null, st = [], optin = false, lastRow = null, npsNota = null;
 const shuffle = a => a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
 
 function show(id){ ['start','intro','warm','quiz','result','bonus'].forEach(s => $(s).hidden = s !== id); window.scrollTo({top:0}); }
@@ -450,7 +469,8 @@ function result(){
   $('allProfiles').innerHTML = keys.map(k=>`<div class="item" style="${key===k?'background:var(--soft);border-radius:10px;padding:8px':''}"><span class="letter" style="color:${P[k].color}">${k}</span><div><div class="name">${P[k].profile}${key===k?' · você':''}</div><div class="desc">${P[k].tag}</div></div></div>`).join('') +
     `<div class="item" style="${key==='ALL'?'background:var(--soft);border-radius:10px;padding:8px':''}"><span class="letter">★</span><div><div class="name">${P.ALL.profile}${key==='ALL'?' · você':''}</div><div class="desc">16/16: ${P.ALL.tag}</div></div></div>`;
   saveParticipant(prof.profile); tally(key);
-  sendResult({nome, email, perfil: prof.profile, pontuacao: total, nivel: level, M: score.M, O: score.O, R: score.R, E: score.E, forte: sk.length ? sk.map(k=>P[k].pt).join(' e ') : 'Os quatro pilares', desenvolver: P[weakKey].pt, dica: P[weakKey].dev, acoes: ACT[weakKey], autoavaliacao: selfWeak ? P[selfWeak].pt : ''});
+  sendResult({nome, email, perfil: prof.profile, pontuacao: total, nivel: level, M: score.M, O: score.O, R: score.R, E: score.E, forte: sk.length ? sk.map(k=>P[k].pt).join(' e ') : 'Os quatro pilares', desenvolver: P[weakKey].pt, dica: P[weakKey].dev, acoes: ACT[weakKey], autoavaliacao: selfWeak ? P[selfWeak].pt : '', comunicacoes: optin ? 'sim' : 'nao'});
+  resetNps();
   show('result');
 }
 function drawDonut(parts, total){
@@ -471,7 +491,7 @@ async function sendResult(rec){
   try {
     const r = await fetch(CONFIG.ENDPOINT, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(rec) });
     let j = {}; try { j = await r.json(); } catch(e){}
-    if(j.ok){ $('remail').textContent = rec.email ? (j.emailed ? `Resultado enviado para ${rec.email}. Confira também o spam.` : `Registrado. O e-mail não pôde ser enviado agora (${j.emailError||'cota'}); o Hub enviará depois.`) : 'Resultado registrado.'; markSent(true); }
+    if(j.ok){ lastRow = j.row || null; $('remail').textContent = rec.email ? (j.emailed ? `Resultado enviado para ${rec.email}. Confira também o spam.` : `Registrado. O e-mail não pôde ser enviado agora (${j.emailError||'cota'}); o Hub enviará depois.`) : 'Resultado registrado.'; markSent(true); }
     else throw new Error(j.error || 'resposta inválida');
   } catch(e){
     $('remail').textContent = (rec.email ? `Não foi possível enviar agora para ${rec.email}. ` : '') + 'Resultado guardado neste aparelho; a equipe envia depois.';
@@ -479,6 +499,25 @@ async function sendResult(rec){
   }
   $('remail').hidden = false;
 }
+function resetNps(){
+  npsNota = null; lastRow = null; $('npsComment').value = ''; $('npsMsg').textContent = ''; $('btnNps').disabled = true; $('btnNps').textContent = 'Enviar avaliação'; $('nps').hidden = false;
+  $('npsScale').innerHTML = Array.from({length:11},(_,n)=>`<button type="button" data-n="${n}">${n}</button>`).join('');
+  $('npsScale').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { npsNota = +b.dataset.n; $('npsScale').querySelectorAll('button').forEach(x=>x.classList.toggle('sel', x===b)); $('btnNps').disabled = false; }));
+}
+async function sendNps(){
+  if(npsNota === null) return;
+  const com = $('npsComment').value.trim();
+  $('btnNps').disabled = true; $('npsMsg').textContent = 'Enviando…';
+  try { const l = JSON.parse(localStorage.getItem('more-participantes')||'[]'); if(l.length){ l[l.length-1].nps = npsNota; l[l.length-1].npsComentario = com; localStorage.setItem('more-participantes', JSON.stringify(l)); } } catch(e){}
+  if(!online()){ $('npsMsg').textContent = 'Obrigado! Avaliação guardada neste aparelho.'; $('btnNps').textContent = 'Enviada'; return; }
+  try {
+    const r = await fetch(CONFIG.ENDPOINT, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({tipo:'nps', row:lastRow, nota:npsNota, comentario:com, nome, email, perfil:$('rname').textContent}) });
+    let j = {}; try { j = await r.json(); } catch(e){}
+    if(!j.ok) throw new Error(j.error||'falha');
+    $('npsMsg').textContent = 'Obrigado pela avaliação!'; $('btnNps').textContent = 'Enviada';
+  } catch(e){ $('npsMsg').textContent = 'Não foi possível enviar agora; ficou guardada neste aparelho.'; $('btnNps').textContent = 'Enviada'; }
+}
+$('btnNps').addEventListener('click', sendNps);
 function markSent(ok){ try { const l = JSON.parse(localStorage.getItem('more-participantes')||'[]'); if(l.length){ l[l.length-1].enviado = ok ? 'sim' : 'nao'; localStorage.setItem('more-participantes', JSON.stringify(l)); } } catch(e){} }
 async function loadStats(){
   if(!online()){ $('tallyAll').innerHTML = '<div style="grid-column:1/-1;border:0"><small>Endpoint não configurado.</small></div>'; return; }
@@ -488,12 +527,13 @@ async function loadStats(){
     const c = j.perfis || {};
     $('tallyAll').innerHTML = ['M','O','R','E'].map(k=>`<div><strong style="color:${P[k].color}">${c[P[k].profile]||0}</strong><small>${P[k].profile.split(' ')[0]}</small></div>`).join('') +
       `<div style="grid-column:1/-1"><strong>${c[P.ALL.profile]||0}</strong><small>M.O.R.E. Integral</small></div>` +
-      `<div style="grid-column:1/-1;border:0;padding:4px"><small>${j.total||0} participante${j.total===1?'':'s'} · ${j.emails||0} e-mails enviados · média ${j.media||0}/16</small></div>`;
+      `<div style="grid-column:1/-1;border:0;padding:4px"><small>${j.total||0} participante${j.total===1?'':'s'} · ${j.emails||0} e-mails enviados · média ${j.media||0}/16 · aceitam comunicações: ${j.optin||0}</small></div>` +
+      `<div style="grid-column:1/-1"><strong>${j.nps==null?'—':j.nps}</strong><small>NPS do jogo · ${j.npsN||0} avaliação${j.npsN===1?'':'ões'} · média ${j.npsMedia==null?'—':j.npsMedia}</small></div>`;
     $('statsMsg').textContent = 'Atualizado ' + new Date().toLocaleTimeString('pt-BR');
   } catch(e){ $('statsMsg').textContent = 'Sem conexão com a planilha.'; }
 }
 function saveParticipant(profile){
-  try { const l = JSON.parse(localStorage.getItem('more-participantes')||'[]'); l.push({ts:new Date().toISOString(), nome, email, perfil:profile, M:score.M, O:score.O, R:score.R, E:score.E}); localStorage.setItem('more-participantes', JSON.stringify(l)); } catch(e){}
+  try { const l = JSON.parse(localStorage.getItem('more-participantes')||'[]'); l.push({ts:new Date().toISOString(), nome, email, perfil:profile, M:score.M, O:score.O, R:score.R, E:score.E, comunicacoes: optin ? 'sim' : 'nao'}); localStorage.setItem('more-participantes', JSON.stringify(l)); } catch(e){}
   opCount();
 }
 function opCount(){ let n = 0; try { n = JSON.parse(localStorage.getItem('more-participantes')||'[]').length; } catch(e){} $('opCount').textContent = n ? `${n} registro${n>1?'s':''} neste aparelho` : ''; }
@@ -514,7 +554,7 @@ function copyText(text, toastEl){
 /* ---------- wiring ---------- */
 $('selfOpts').querySelectorAll('.opt').forEach(b => b.addEventListener('click', () => { $('selfOpts').querySelectorAll('.opt').forEach(x=>x.classList.remove('sel')); b.classList.add('sel'); selfWeak = b.dataset.k; }));
 $('btnStart').addEventListener('click', () => {
-  nome = $('nome').value.trim(); email = $('email').value.trim();
+  nome = $('nome').value.trim(); email = $('email').value.trim(); optin = $('optin').checked;
   if(email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ $('email').focus(); $('email').setCustomValidity('x'); $('email').reportValidity && $('email').reportValidity(); $('email').setCustomValidity(''); return; }
   i = 0; st = []; score = {M:0,O:0,R:0,E:0}; show('intro');
 });
@@ -523,14 +563,14 @@ $('btnWarmNext').addEventListener('click', () => { renderQ(); show('quiz'); });
 $('btnNext').addEventListener('click', () => { i++; i < Q.length ? renderQ() : result(); });
 $('btnPrev').addEventListener('click', () => { if(i > 0){ i--; renderQ(); } });
 $('btnConfirm').addEventListener('click', confirmMulti);
-$('btnNextP').addEventListener('click', () => { $('nome').value=''; $('email').value=''; selfWeak=null; $('selfOpts').querySelectorAll('.opt').forEach(x=>x.classList.remove('sel')); show('start'); $('nome').focus(); });
+$('btnNextP').addEventListener('click', () => { $('nome').value=''; $('email').value=''; $('optin').checked=false; optin=false; selfWeak=null; $('selfOpts').querySelectorAll('.opt').forEach(x=>x.classList.remove('sel')); show('start'); $('nome').focus(); });
 $('btnCopy').addEventListener('click', () => copyText(window._share, $('toast')));
 $('btnBonus').addEventListener('click', () => { $('btnBonusDone').hidden = true; matchGame($('bonusBox'), $('bonusStatus'), LEARN, () => { $('btnBonusDone').hidden = false; }); show('bonus'); });
 $('btnBonusDone').addEventListener('click', () => show('result'));
 $('btnExport').addEventListener('click', () => {
   let l = []; try { l = JSON.parse(localStorage.getItem('more-participantes')||'[]'); } catch(e){}
   if(!l.length){ $('opCount').textContent = 'Nenhum registro ainda neste aparelho.'; return; }
-  const csv = '\ufeff' + ['data;nome;email;perfil;M;O;R;E;enviado'].concat(l.map(r=>[r.ts,r.nome,r.email,r.perfil,r.M,r.O,r.R,r.E,r.enviado||''].map(v=>String(v==null?'':v).replace(/;/g,',')).join(';'))).join('\n');
+  const csv = '\ufeff' + ['data;nome;email;perfil;M;O;R;E;enviado;comunicacoes;nps;comentario'].concat(l.map(r=>[r.ts,r.nome,r.email,r.perfil,r.M,r.O,r.R,r.E,r.enviado||'',r.comunicacoes||'',r.nps==null?'':r.nps,r.npsComentario||''].map(v=>String(v==null?'':v).replace(/;/g,',')).join(';'))).join('\n');
   const fname = 'more-participantes-' + new Date().toISOString().slice(0,10) + '.csv';
   try {
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})); a.download = fname; document.body.appendChild(a); a.click(); a.remove();
@@ -539,7 +579,7 @@ $('btnExport').addEventListener('click', () => {
 });
 $('btnExportCopy').addEventListener('click', () => {
   let l = []; try { l = JSON.parse(localStorage.getItem('more-participantes')||'[]'); } catch(e){}
-  const csv = ['data;nome;email;perfil;M;O;R;E;enviado'].concat(l.map(r=>[r.ts,r.nome,r.email,r.perfil,r.M,r.O,r.R,r.E,r.enviado||''].map(v=>String(v==null?'':v).replace(/;/g,',')).join(';'))).join('\n');
+  const csv = ['data;nome;email;perfil;M;O;R;E;enviado;comunicacoes;nps;comentario'].concat(l.map(r=>[r.ts,r.nome,r.email,r.perfil,r.M,r.O,r.R,r.E,r.enviado||'',r.comunicacoes||'',r.nps==null?'':r.nps,r.npsComentario||''].map(v=>String(v==null?'':v).replace(/;/g,',')).join(';'))).join('\n');
   copyText(csv, $('opCount'));
 });
 const PIN = CONFIG.PIN; let taps = [], unlocked = false;
