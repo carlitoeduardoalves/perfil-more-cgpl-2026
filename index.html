@@ -261,6 +261,19 @@ footer{font-size:13px;color:var(--muted);text-align:center;line-height:1.5}
     </div>
   </section>
 
+  <!-- 5b. DONE -->
+  <section id="done" class="card" hidden style="text-align:center">
+    <div style="width:72px;height:72px;border-radius:50%;background:var(--ok-bg);color:var(--ok);display:grid;place-items:center;margin:6px auto 14px;font-size:38px;font-weight:700;line-height:1">✓</div>
+    <h2 id="doneTitle">Tudo certo!</h2>
+    <p class="lead" id="doneMsg" style="margin-top:10px"></p>
+    <p class="hint" id="doneStatus" style="margin-top:8px"></p>
+    <div class="row" style="margin-top:22px;justify-content:center">
+      <button class="btn" id="btnAgain">Responder novamente</button>
+      <button class="btn ghost" id="btnSeeResult">Ver meu resultado</button>
+    </div>
+    <p class="hint" style="margin-top:18px">Obrigado por participar do Hub do Conhecimento · PMI-PE</p>
+  </section>
+
   <!-- 6. BONUS: LEARN -->
   <section id="bonus" class="card" hidden>
     <span class="eyebrow">Bônus · Manage Perceptions</span>
@@ -273,7 +286,7 @@ footer{font-size:13px;color:var(--muted);text-align:center;line-height:1.5}
     </div>
   </section>
 
-  <footer>Uma experiência do Hub do Conhecimento · PMI Pernambuco · XVI Conferência de Gestão, Projetos e Liderança 2026<br>Conteúdo baseado em PMI Essentials: M.O.R.E. – Maximizing Project Success (PMI, 2025). M.O.R.E. e PMI Talent Triangle® são do Project Management Institute. Versão 1.2.</footer>
+  <footer>Uma experiência do Hub do Conhecimento · PMI Pernambuco · XVI Conferência de Gestão, Projetos e Liderança 2026<br>Conteúdo baseado em PMI Essentials: M.O.R.E. – Maximizing Project Success (PMI, 2025). M.O.R.E. e PMI Talent Triangle® são do Project Management Institute. Versão 1.3.</footer>
 
   <section class="admin" id="adminPin" hidden>
     <h3>Área da equipe do Hub</h3>
@@ -377,10 +390,11 @@ const Q = [
 ];
 
 const $ = id => document.getElementById(id);
-let i = 0, score = {M:0,O:0,R:0,E:0}, nome = '', email = '', lastKey = null, selfWeak = null, st = [], optin = false, npsNota = null, pending = null, sent = false;
+let i = 0, score = {M:0,O:0,R:0,E:0}, nome = '', email = '', lastKey = null, selfWeak = null, st = [], optin = false, npsNota = null, pending = null, sent = false, done = false;
+const uid_ = () => Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,8);
 const shuffle = a => a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
 
-function show(id){ ['start','intro','warm','quiz','result','bonus'].forEach(s => $(s).hidden = s !== id); window.scrollTo({top:0}); }
+function show(id){ ['start','intro','warm','quiz','result','done','bonus'].forEach(s => $(s).hidden = s !== id); window.scrollTo({top:0}); }
 
 /* ---------- matching puzzle ---------- */
 function matchGame(box, statusEl, pairs, onDone){
@@ -472,8 +486,8 @@ function result(){
   $('allProfiles').innerHTML = keys.map(k=>`<div class="item" style="${key===k?'background:var(--soft);border-radius:10px;padding:8px':''}"><span class="letter" style="color:${P[k].color}">${k}</span><div><div class="name">${P[k].profile}${key===k?' · você':''}</div><div class="desc">${P[k].tag}</div></div></div>`).join('') +
     `<div class="item" style="${key==='ALL'?'background:var(--soft);border-radius:10px;padding:8px':''}"><span class="letter">★</span><div><div class="name">${P.ALL.profile}${key==='ALL'?' · você':''}</div><div class="desc">16/16: ${P.ALL.tag}</div></div></div>`;
   saveParticipant(prof.profile); tally(key);
-  pending = {nome, email, perfil: prof.profile, pontuacao: total, nivel: level, M: score.M, O: score.O, R: score.R, E: score.E, forte: sk.length ? sk.map(k=>P[k].pt).join(' e ') : 'Os quatro pilares', desenvolver: P[weakKey].pt, dica: P[weakKey].dev, acoes: ACT[weakKey], autoavaliacao: selfWeak ? P[selfWeak].pt : '', comunicacoes: optin ? 'sim' : 'nao'};
-  sent = false;
+  pending = {uid: uid_(), nome, email, perfil: prof.profile, pontuacao: total, nivel: level, M: score.M, O: score.O, R: score.R, E: score.E, forte: sk.length ? sk.map(k=>P[k].pt).join(' e ') : 'Os quatro pilares', desenvolver: P[weakKey].pt, dica: P[weakKey].dev, acoes: ACT[weakKey], autoavaliacao: selfWeak ? P[selfWeak].pt : '', comunicacoes: optin ? 'sim' : 'nao'};
+  sent = false; done = false;
   resetNps();
   show('result');
 }
@@ -489,19 +503,24 @@ function drawDonut(parts, total){
   svg.innerHTML = out + `<text x="60" y="58" text-anchor="middle" font-size="20">${total}</text><text x="60" y="74" text-anchor="middle" font-size="9" style="fill:var(--muted);font-weight:600">de 16</text>`;
 }
 const online = () => /^https:\/\/script\.google\.com\//.test(CONFIG.ENDPOINT);
+function setStatus(t){ $('remail').hidden = !t; $('remail').textContent = t; $('doneStatus').textContent = t; }
+async function postJSON(obj){
+  const r = await fetch(CONFIG.ENDPOINT, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(obj) });
+  let j = {}; try { j = await r.json(); } catch(e){}
+  if(!j.ok) throw new Error(j.error || 'resposta inválida');
+  return j;
+}
 async function sendResult(rec){
-  if(!online()){ $('remail').textContent = rec.email ? 'Endpoint não configurado: resultado guardado só neste aparelho.' : ''; $('remail').hidden = !rec.email; return; }
+  if(!online()){ setStatus(rec.email ? 'Endpoint não configurado: resultado guardado só neste aparelho.' : 'Resultado guardado neste aparelho.'); return; }
   rec.origem = location.hostname || 'local'; rec.agente = navigator.userAgent.slice(0,80);
   try {
-    const r = await fetch(CONFIG.ENDPOINT, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(rec) });
-    let j = {}; try { j = await r.json(); } catch(e){}
-    if(j.ok){ $('remail').textContent = rec.email ? (j.emailed ? `Resultado enviado para ${rec.email}. Confira também o spam.` : `Registrado. O e-mail não pôde ser enviado agora (${j.emailError||'cota'}); o Hub enviará depois.`) : 'Resultado registrado.'; markSent(true); }
-    else throw new Error(j.error || 'resposta inválida');
+    const j = await postJSON(rec);
+    setStatus(rec.email ? (j.emailed ? `Resultado enviado para ${rec.email}. Confira também o spam.` : `Registrado. O e-mail não pôde ser enviado agora (${j.emailError||'cota'}); o Hub enviará depois.`) : 'Resultado registrado.');
+    markSent(true);
   } catch(e){
-    $('remail').textContent = (rec.email ? `Não foi possível enviar agora para ${rec.email}. ` : '') + 'Resultado guardado neste aparelho; a equipe envia depois.';
+    setStatus((rec.email ? `Não foi possível enviar agora para ${rec.email}. ` : '') + 'Resultado guardado neste aparelho; a equipe envia depois.');
     markSent(false);
   }
-  $('remail').hidden = false;
 }
 function resetNps(){
   npsNota = null; $('npsComment').value = ''; $('npsComment').disabled = false; $('npsMsg').textContent = ''; $('nps').hidden = false;
@@ -512,27 +531,40 @@ function resetNps(){
   $('npsScale').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { npsNota = +b.dataset.n; $('npsScale').querySelectorAll('button').forEach(x=>x.classList.toggle('sel', x===b)); }));
 }
 function finalize(skip){
-  if(!pending || sent) return;
+  if(!pending || done) return;
   if(!skip && npsNota === null){ $('npsMsg').textContent = 'Escolha uma nota de 0 a 10, ou toque em "Pular avaliação".'; return; }
-  sent = true;
-  pending.nps = skip ? '' : npsNota; pending.npsComentario = skip ? '' : $('npsComment').value.trim().slice(0,300);
-  try { const l = JSON.parse(localStorage.getItem('more-participantes')||'[]'); if(l.length){ l[l.length-1].nps = pending.nps; l[l.length-1].npsComentario = pending.npsComentario; localStorage.setItem('more-participantes', JSON.stringify(l)); } } catch(e){}
+  done = true;
+  const nps = skip ? '' : npsNota, com = skip ? '' : $('npsComment').value.trim().slice(0,300);
+  try { const l = JSON.parse(localStorage.getItem('more-participantes')||'[]'); if(l.length){ l[l.length-1].nps = nps; l[l.length-1].npsComentario = com; localStorage.setItem('more-participantes', JSON.stringify(l)); } } catch(e){}
   $('npsScale').querySelectorAll('button').forEach(x => x.disabled = true); $('npsComment').disabled = true;
   $('btnNps').hidden = true; $('btnNpsSkip').hidden = true;
-  $('npsMsg').textContent = skip ? 'Avaliação pulada.' : 'Obrigado pela avaliação!';
-  $('remail').hidden = false; $('remail').textContent = email ? `Enviando seu resultado para ${email}…` : 'Registrando…';
-  sendResult(pending);
+  $('doneTitle').textContent = skip ? 'Resultado registrado!' : 'Obrigado pela avaliação!';
+  $('doneMsg').textContent = (nome ? nome + ', s' : 'S') + 'eu perfil M.O.R.E. é "' + pending.perfil + '"' + (skip ? '.' : `. Sua nota para o jogo: ${nps}/10.`);
+  setStatus(email ? `Enviando seu resultado para ${email}…` : 'Registrando…');
+  show('done');
+  if(!sent){ sent = true; pending.nps = nps; pending.npsComentario = com; sendResult(pending); }
+  else if(online()) { // registro já foi pela rede de segurança: completa a mesma linha com o NPS
+    postJSON({tipo:'nps', uid: pending.uid, nota: nps, comentario: com, nome, email, perfil: pending.perfil})
+      .then(() => setStatus(email ? `Resultado enviado para ${email}. Confira também o spam.` : 'Resultado registrado.'))
+      .catch(() => setStatus('Resultado registrado; a avaliação ficou guardada neste aparelho.'));
+  }
 }
 $('btnNps').addEventListener('click', () => finalize(false));
 $('btnNpsSkip').addEventListener('click', () => finalize(true));
-// Rede de segurança: se a pessoa sair sem concluir, envia o registro (sem NPS) em segundo plano
+$('btnSeeResult').addEventListener('click', () => show('result'));
+$('btnAgain').addEventListener('click', () => $('btnNextP').click());
+// Rede de segurança: se a pessoa fechar a página sem concluir, envia o registro (sem NPS) em segundo plano
 function beaconIfPending(){
   if(!pending || sent || !online()) return;
-  sent = true; pending.nps = ''; pending.npsComentario = ''; pending.origem = (location.hostname || 'local') + ' (auto)';
-  try { navigator.sendBeacon(CONFIG.ENDPOINT, new Blob([JSON.stringify(pending)], {type:'text/plain;charset=utf-8'})); } catch(e){}
+  sent = true; const rec = Object.assign({}, pending, {nps:'', npsComentario:'', origem:(location.hostname || 'local') + ' (auto)'});
+  try { navigator.sendBeacon(CONFIG.ENDPOINT, new Blob([JSON.stringify(rec)], {type:'text/plain;charset=utf-8'})); } catch(e){}
 }
 window.addEventListener('pagehide', beaconIfPending);
-document.addEventListener('visibilitychange', () => { if(document.visibilityState === 'hidden') beaconIfPending(); });
+let hideTimer = null;
+document.addEventListener('visibilitychange', () => {
+  if(document.visibilityState === 'hidden'){ hideTimer = setTimeout(beaconIfPending, 90000); } // só após 90 s fora da página
+  else if(hideTimer){ clearTimeout(hideTimer); hideTimer = null; }
+});
 function markSent(ok){ try { const l = JSON.parse(localStorage.getItem('more-participantes')||'[]'); if(l.length){ l[l.length-1].enviado = ok ? 'sim' : 'nao'; localStorage.setItem('more-participantes', JSON.stringify(l)); } } catch(e){} }
 async function loadStats(){
   if(!online()){ $('tallyAll').innerHTML = '<div style="grid-column:1/-1;border:0"><small>Endpoint não configurado.</small></div>'; return; }
@@ -578,7 +610,7 @@ $('btnWarmNext').addEventListener('click', () => { renderQ(); show('quiz'); });
 $('btnNext').addEventListener('click', () => { i++; i < Q.length ? renderQ() : result(); });
 $('btnPrev').addEventListener('click', () => { if(i > 0){ i--; renderQ(); } });
 $('btnConfirm').addEventListener('click', confirmMulti);
-$('btnNextP').addEventListener('click', () => { if(pending && !sent) finalize(true); pending = null; $('nome').value=''; $('email').value=''; $('optin').checked=false; optin=false; selfWeak=null; $('selfOpts').querySelectorAll('.opt').forEach(x=>x.classList.remove('sel')); show('start'); $('nome').focus(); });
+$('btnNextP').addEventListener('click', () => { if(pending && !done) finalize(true); pending = null; done = false; $('nome').value=''; $('email').value=''; $('optin').checked=false; optin=false; selfWeak=null; $('selfOpts').querySelectorAll('.opt').forEach(x=>x.classList.remove('sel')); show('start'); $('nome').focus(); });
 $('btnCopy').addEventListener('click', () => copyText(window._share, $('toast')));
 $('btnBonus').addEventListener('click', () => { $('btnBonusDone').hidden = true; matchGame($('bonusBox'), $('bonusStatus'), LEARN, () => { $('btnBonusDone').hidden = false; }); show('bonus'); });
 $('btnBonusDone').addEventListener('click', () => show('result'));
