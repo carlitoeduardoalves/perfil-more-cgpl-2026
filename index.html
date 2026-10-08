@@ -29,6 +29,7 @@
   --roxo:#9d7bdc; --ciano:#3cc3e2; --laranja:#ff8a52; --tan:#d2a97f; --soft:#2d2546; --accent-fg:#17132a; --pill-fg:#17132a;
   --ok:#5fd39a; --ok-bg:#1d3a2c; --bad:#ff8a84; --bad-bg:#44232a; color-scheme:dark}
 *{box-sizing:border-box}
+button,.opt,.chip,.pill,a{touch-action:manipulation}
 body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.45;margin:0;padding-block:20px 40px;padding-inline:16px}
 .wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;gap:18px}
 header.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
@@ -144,7 +145,7 @@ footer{font-size:13px;color:var(--muted);text-align:center;line-height:1.5}
 <div class="wrap">
   <header class="top">
     <div class="brand">Hub do Conhecimento · <b>PMI-PE</b></div>
-    <button class="pill" id="pillTap" type="button" style="cursor:pointer;background:transparent;font:inherit" aria-label="XVI CGPL 2026">XVI CGPL 2026</button>
+    <div class="pill">XVI CGPL 2026</div>
   </header>
 
   <!-- 1. START -->
@@ -241,10 +242,12 @@ footer{font-size:13px;color:var(--muted);text-align:center;line-height:1.5}
     <div class="nps" id="nps">
       <div class="result-title">Avalie o jogo</div>
       <div style="font-family:var(--display);font-weight:600;font-size:17px;margin-top:4px">De 0 a 10, quanto você recomendaria este jogo a um colega?</div>
+      <p class="hint" id="npsIntro" style="margin:6px 0 0"></p>
       <div class="scale" id="npsScale"></div>
       <div class="ends"><span>0 · Não recomendaria</span><span>10 · Com certeza</span></div>
       <textarea id="npsComment" maxlength="300" placeholder="O que faria o jogo ficar melhor? (opcional)"></textarea>
-      <div class="row" style="margin-top:10px"><button class="btn sm" id="btnNps" disabled>Enviar avaliação</button><span class="hint" id="npsMsg"></span></div>
+      <div class="row" style="margin-top:12px"><button class="btn" id="btnNps">Enviar avaliação e receber por e-mail</button><button class="btn ghost sm" id="btnNpsSkip">Pular avaliação</button></div>
+      <p class="hint" id="npsMsg" style="margin:8px 0 0"></p>
     </div>
     <div class="row" style="margin-top:18px">
       <button class="btn" id="btnNextP">Próximo participante</button>
@@ -270,7 +273,7 @@ footer{font-size:13px;color:var(--muted);text-align:center;line-height:1.5}
     </div>
   </section>
 
-  <footer>Uma experiência do Hub do Conhecimento · PMI Pernambuco · XVI Conferência de Gestão, Projetos e Liderança 2026<br>Conteúdo baseado em PMI Essentials: M.O.R.E. – Maximizing Project Success (PMI, 2025). M.O.R.E. e PMI Talent Triangle® são do Project Management Institute. Versão 1.1.</footer>
+  <footer>Uma experiência do Hub do Conhecimento · PMI Pernambuco · XVI Conferência de Gestão, Projetos e Liderança 2026<br>Conteúdo baseado em PMI Essentials: M.O.R.E. – Maximizing Project Success (PMI, 2025). M.O.R.E. e PMI Talent Triangle® são do Project Management Institute. Versão 1.2.</footer>
 
   <section class="admin" id="adminPin" hidden>
     <h3>Área da equipe do Hub</h3>
@@ -286,7 +289,7 @@ footer{font-size:13px;color:var(--muted);text-align:center;line-height:1.5}
     <div class="tally" id="tally"></div>
     <div class="row"><button class="btn ghost sm" id="btnExport">Baixar participantes (CSV)</button><button class="btn ghost sm" id="btnExportCopy">Copiar CSV</button><button class="btn ghost sm" id="btnReset">Zerar registros</button></div>
     <span class="hint" id="opCount"></span>
-    <span class="hint">Para abrir esta área: toque 5 vezes em "XVI CGPL 2026" no topo e digite o PIN da equipe. Os registros completos ficam na planilha do Google; o CSV local é só reserva caso a internet caia.</span>
+    <span class="hint">Para abrir esta área: use o link do jogo com <code>?equipe</code> no final e digite o PIN da equipe. Os registros completos ficam na planilha do Google; o CSV local é só reserva caso a internet caia.</span>
   </section>
 </div>
 
@@ -374,7 +377,7 @@ const Q = [
 ];
 
 const $ = id => document.getElementById(id);
-let i = 0, score = {M:0,O:0,R:0,E:0}, nome = '', email = '', lastKey = null, selfWeak = null, st = [], optin = false, lastRow = null, npsNota = null;
+let i = 0, score = {M:0,O:0,R:0,E:0}, nome = '', email = '', lastKey = null, selfWeak = null, st = [], optin = false, npsNota = null, pending = null, sent = false;
 const shuffle = a => a.map(x=>[Math.random(),x]).sort((a,b)=>a[0]-b[0]).map(x=>x[1]);
 
 function show(id){ ['start','intro','warm','quiz','result','bonus'].forEach(s => $(s).hidden = s !== id); window.scrollTo({top:0}); }
@@ -463,13 +466,14 @@ function result(){
   $('insWeak').innerHTML = `<div class="top"><span class="badge" style="background:${P[weakKey].color}">${weakKey}</span><div><div class="ttl">Para desenvolver</div><div class="big">${P[weakKey].pt}</div></div></div><p>${P[weakKey].dev}</p>${selfWeak ? `<div class="self">Você mesmo apontou este pilar como o que menos pratica hoje${selfWeak!==weakKey?' ('+P[selfWeak].pt.toLowerCase()+')':''}.</div>` : ''}`;
   $('insDev').style.setProperty('--acc', P[weakKey].color);
   $('insDev').innerHTML = `<div class="ttl">Encaminhamentos · por onde começar em ${P[weakKey].pt.toLowerCase()}</div><ul class="steps">${ACT[weakKey].map((a,n)=>`<li><i>${n+1}</i><span>${a}</span></li>`).join('')}</ul>`;
-  $('remail').hidden = !email; $('remail').textContent = email ? `Enviando seu resultado para ${email}…` : '';
+  $('remail').hidden = true;
   window._share = `Meu perfil M.O.R.E. é "${prof.profile}" · ${total}/16 (M ${score.M} · O ${score.O} · R ${score.R} · E ${score.E}). Hub do Conhecimento · PMI-PE · XVI CGPL 2026`;
   window._share += '\nPonto forte: ' + (sk.length ? sk.map(k=>P[k].pt).join(' e ') : 'os quatro pilares') + '\nPara desenvolver: ' + P[weakKey].pt + '\nEncaminhamentos:\n- ' + ACT[weakKey].join('\n- ');
   $('allProfiles').innerHTML = keys.map(k=>`<div class="item" style="${key===k?'background:var(--soft);border-radius:10px;padding:8px':''}"><span class="letter" style="color:${P[k].color}">${k}</span><div><div class="name">${P[k].profile}${key===k?' · você':''}</div><div class="desc">${P[k].tag}</div></div></div>`).join('') +
     `<div class="item" style="${key==='ALL'?'background:var(--soft);border-radius:10px;padding:8px':''}"><span class="letter">★</span><div><div class="name">${P.ALL.profile}${key==='ALL'?' · você':''}</div><div class="desc">16/16: ${P.ALL.tag}</div></div></div>`;
   saveParticipant(prof.profile); tally(key);
-  sendResult({nome, email, perfil: prof.profile, pontuacao: total, nivel: level, M: score.M, O: score.O, R: score.R, E: score.E, forte: sk.length ? sk.map(k=>P[k].pt).join(' e ') : 'Os quatro pilares', desenvolver: P[weakKey].pt, dica: P[weakKey].dev, acoes: ACT[weakKey], autoavaliacao: selfWeak ? P[selfWeak].pt : '', comunicacoes: optin ? 'sim' : 'nao'});
+  pending = {nome, email, perfil: prof.profile, pontuacao: total, nivel: level, M: score.M, O: score.O, R: score.R, E: score.E, forte: sk.length ? sk.map(k=>P[k].pt).join(' e ') : 'Os quatro pilares', desenvolver: P[weakKey].pt, dica: P[weakKey].dev, acoes: ACT[weakKey], autoavaliacao: selfWeak ? P[selfWeak].pt : '', comunicacoes: optin ? 'sim' : 'nao'};
+  sent = false;
   resetNps();
   show('result');
 }
@@ -491,7 +495,7 @@ async function sendResult(rec){
   try {
     const r = await fetch(CONFIG.ENDPOINT, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(rec) });
     let j = {}; try { j = await r.json(); } catch(e){}
-    if(j.ok){ lastRow = j.row || null; $('remail').textContent = rec.email ? (j.emailed ? `Resultado enviado para ${rec.email}. Confira também o spam.` : `Registrado. O e-mail não pôde ser enviado agora (${j.emailError||'cota'}); o Hub enviará depois.`) : 'Resultado registrado.'; markSent(true); }
+    if(j.ok){ $('remail').textContent = rec.email ? (j.emailed ? `Resultado enviado para ${rec.email}. Confira também o spam.` : `Registrado. O e-mail não pôde ser enviado agora (${j.emailError||'cota'}); o Hub enviará depois.`) : 'Resultado registrado.'; markSent(true); }
     else throw new Error(j.error || 'resposta inválida');
   } catch(e){
     $('remail').textContent = (rec.email ? `Não foi possível enviar agora para ${rec.email}. ` : '') + 'Resultado guardado neste aparelho; a equipe envia depois.';
@@ -500,24 +504,35 @@ async function sendResult(rec){
   $('remail').hidden = false;
 }
 function resetNps(){
-  npsNota = null; lastRow = null; $('npsComment').value = ''; $('npsMsg').textContent = ''; $('btnNps').disabled = true; $('btnNps').textContent = 'Enviar avaliação'; $('nps').hidden = false;
+  npsNota = null; $('npsComment').value = ''; $('npsComment').disabled = false; $('npsMsg').textContent = ''; $('nps').hidden = false;
+  $('btnNps').disabled = false; $('btnNps').hidden = false; $('btnNpsSkip').hidden = false;
+  $('btnNps').textContent = email ? 'Enviar avaliação e receber por e-mail' : 'Enviar avaliação';
+  $('npsIntro').textContent = email ? `Responda (ou pule) para receber seu resultado em ${email}.` : 'Leva 10 segundos e ajuda o Hub a melhorar o jogo.';
   $('npsScale').innerHTML = Array.from({length:11},(_,n)=>`<button type="button" data-n="${n}">${n}</button>`).join('');
-  $('npsScale').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { npsNota = +b.dataset.n; $('npsScale').querySelectorAll('button').forEach(x=>x.classList.toggle('sel', x===b)); $('btnNps').disabled = false; }));
+  $('npsScale').querySelectorAll('button').forEach(b => b.addEventListener('click', () => { npsNota = +b.dataset.n; $('npsScale').querySelectorAll('button').forEach(x=>x.classList.toggle('sel', x===b)); }));
 }
-async function sendNps(){
-  if(npsNota === null) return;
-  const com = $('npsComment').value.trim();
-  $('btnNps').disabled = true; $('npsMsg').textContent = 'Enviando…';
-  try { const l = JSON.parse(localStorage.getItem('more-participantes')||'[]'); if(l.length){ l[l.length-1].nps = npsNota; l[l.length-1].npsComentario = com; localStorage.setItem('more-participantes', JSON.stringify(l)); } } catch(e){}
-  if(!online()){ $('npsMsg').textContent = 'Obrigado! Avaliação guardada neste aparelho.'; $('btnNps').textContent = 'Enviada'; return; }
-  try {
-    const r = await fetch(CONFIG.ENDPOINT, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify({tipo:'nps', row:lastRow, nota:npsNota, comentario:com, nome, email, perfil:$('rname').textContent}) });
-    let j = {}; try { j = await r.json(); } catch(e){}
-    if(!j.ok) throw new Error(j.error||'falha');
-    $('npsMsg').textContent = 'Obrigado pela avaliação!'; $('btnNps').textContent = 'Enviada';
-  } catch(e){ $('npsMsg').textContent = 'Não foi possível enviar agora; ficou guardada neste aparelho.'; $('btnNps').textContent = 'Enviada'; }
+function finalize(skip){
+  if(!pending || sent) return;
+  if(!skip && npsNota === null){ $('npsMsg').textContent = 'Escolha uma nota de 0 a 10, ou toque em "Pular avaliação".'; return; }
+  sent = true;
+  pending.nps = skip ? '' : npsNota; pending.npsComentario = skip ? '' : $('npsComment').value.trim().slice(0,300);
+  try { const l = JSON.parse(localStorage.getItem('more-participantes')||'[]'); if(l.length){ l[l.length-1].nps = pending.nps; l[l.length-1].npsComentario = pending.npsComentario; localStorage.setItem('more-participantes', JSON.stringify(l)); } } catch(e){}
+  $('npsScale').querySelectorAll('button').forEach(x => x.disabled = true); $('npsComment').disabled = true;
+  $('btnNps').hidden = true; $('btnNpsSkip').hidden = true;
+  $('npsMsg').textContent = skip ? 'Avaliação pulada.' : 'Obrigado pela avaliação!';
+  $('remail').hidden = false; $('remail').textContent = email ? `Enviando seu resultado para ${email}…` : 'Registrando…';
+  sendResult(pending);
 }
-$('btnNps').addEventListener('click', sendNps);
+$('btnNps').addEventListener('click', () => finalize(false));
+$('btnNpsSkip').addEventListener('click', () => finalize(true));
+// Rede de segurança: se a pessoa sair sem concluir, envia o registro (sem NPS) em segundo plano
+function beaconIfPending(){
+  if(!pending || sent || !online()) return;
+  sent = true; pending.nps = ''; pending.npsComentario = ''; pending.origem = (location.hostname || 'local') + ' (auto)';
+  try { navigator.sendBeacon(CONFIG.ENDPOINT, new Blob([JSON.stringify(pending)], {type:'text/plain;charset=utf-8'})); } catch(e){}
+}
+window.addEventListener('pagehide', beaconIfPending);
+document.addEventListener('visibilitychange', () => { if(document.visibilityState === 'hidden') beaconIfPending(); });
 function markSent(ok){ try { const l = JSON.parse(localStorage.getItem('more-participantes')||'[]'); if(l.length){ l[l.length-1].enviado = ok ? 'sim' : 'nao'; localStorage.setItem('more-participantes', JSON.stringify(l)); } } catch(e){} }
 async function loadStats(){
   if(!online()){ $('tallyAll').innerHTML = '<div style="grid-column:1/-1;border:0"><small>Endpoint não configurado.</small></div>'; return; }
@@ -563,7 +578,7 @@ $('btnWarmNext').addEventListener('click', () => { renderQ(); show('quiz'); });
 $('btnNext').addEventListener('click', () => { i++; i < Q.length ? renderQ() : result(); });
 $('btnPrev').addEventListener('click', () => { if(i > 0){ i--; renderQ(); } });
 $('btnConfirm').addEventListener('click', confirmMulti);
-$('btnNextP').addEventListener('click', () => { $('nome').value=''; $('email').value=''; $('optin').checked=false; optin=false; selfWeak=null; $('selfOpts').querySelectorAll('.opt').forEach(x=>x.classList.remove('sel')); show('start'); $('nome').focus(); });
+$('btnNextP').addEventListener('click', () => { if(pending && !sent) finalize(true); pending = null; $('nome').value=''; $('email').value=''; $('optin').checked=false; optin=false; selfWeak=null; $('selfOpts').querySelectorAll('.opt').forEach(x=>x.classList.remove('sel')); show('start'); $('nome').focus(); });
 $('btnCopy').addEventListener('click', () => copyText(window._share, $('toast')));
 $('btnBonus').addEventListener('click', () => { $('btnBonusDone').hidden = true; matchGame($('bonusBox'), $('bonusStatus'), LEARN, () => { $('btnBonusDone').hidden = false; }); show('bonus'); });
 $('btnBonusDone').addEventListener('click', () => show('result'));
@@ -582,18 +597,14 @@ $('btnExportCopy').addEventListener('click', () => {
   const csv = ['data;nome;email;perfil;M;O;R;E;enviado;comunicacoes;nps;comentario'].concat(l.map(r=>[r.ts,r.nome,r.email,r.perfil,r.M,r.O,r.R,r.E,r.enviado||'',r.comunicacoes||'',r.nps==null?'':r.nps,r.npsComentario||''].map(v=>String(v==null?'':v).replace(/;/g,',')).join(';'))).join('\n');
   copyText(csv, $('opCount'));
 });
-const PIN = CONFIG.PIN; let taps = [], unlocked = false;
+const PIN = CONFIG.PIN; let unlocked = false;
 function openAdmin(){ unlocked = true; $('adminPin').hidden = true; $('admin').hidden = false; tally(null); opCount(); $('sheetLink').href = CONFIG.SHEET_URL; loadStats(); $('admin').scrollIntoView({behavior:'smooth'}); }
 $('btnStats').addEventListener('click', loadStats);
-$('pillTap').addEventListener('click', () => {
-  const now = Date.now(); taps = taps.filter(t => now - t < 3000); taps.push(now);
-  if(taps.length >= 5){ taps = []; if(unlocked){ openAdmin(); } else { $('adminPin').hidden = false; $('pin').value=''; $('pinMsg').textContent=''; $('adminPin').scrollIntoView({behavior:'smooth'}); $('pin').focus(); } }
-});
 $('btnPin').addEventListener('click', () => { if($('pin').value.trim() === PIN) openAdmin(); else { $('pinMsg').textContent = 'PIN incorreto.'; $('pin').select(); } });
 $('pin').addEventListener('keydown', e => { if(e.key === 'Enter') $('btnPin').click(); });
 $('btnPinCancel').addEventListener('click', () => { $('adminPin').hidden = true; });
 $('btnAdminClose').addEventListener('click', () => { $('admin').hidden = true; window.scrollTo({top:0}); });
-if(location.hash === '#equipe'){ $('adminPin').hidden = false; }
+if(/[?&]equipe/.test(location.search) || location.hash === '#equipe'){ $('adminPin').hidden = false; setTimeout(()=>{ $('adminPin').scrollIntoView({behavior:'smooth'}); $('pin').focus(); }, 300); }
 $('btnReset').addEventListener('click', () => { if($('btnReset').dataset.arm){ try{ localStorage.removeItem('more-participantes'); localStorage.removeItem('more-tally'); }catch(e){} delete $('btnReset').dataset.arm; $('btnReset').textContent='Zerar registros'; tally(null); opCount(); } else { $('btnReset').dataset.arm='1'; $('btnReset').textContent='Confirmar: apagar tudo?'; setTimeout(()=>{ delete $('btnReset').dataset.arm; $('btnReset').textContent='Zerar registros'; },4000); } });
 opCount();
 </script>
